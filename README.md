@@ -13,14 +13,14 @@
     => Now default login and register should work.
 
 10. create admins table for admin authentication by using migration command: php artisan make:migration create_admins_table and copying same schema defination of user.add admin record using following command: 
-``
+```
 	php artisan tinker
 	$admin = new App\Models\Admin;
 	$admin->name = "Admin";
 	$admin->email = "admin@admin.com";
 	$admin->password = Has:make("admin");
 	$admin->save();
-``
+```
 
 11. Now create model called Admin for admin login, make sure it should be authenticable.
 
@@ -34,7 +34,7 @@
 14. Now define routes for admin in web.php file
     {yourRootDirectory}\routes\web.php
 
-``
+```
     --------For Frontend User--------
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::post('/user/logout', [App\Http\Controllers\Auth\LoginController::class, 'userLogout'])->name('user.logout');
@@ -53,7 +53,7 @@
         });
     });
     --------For Admin--------
-``
+```
 
 15. We will create "AdminAuthenticate" middleware, where we will override "authenticate" method. 
 
@@ -68,10 +68,12 @@
 	
 20. Now we will create a logout method in AdminController. And we also have to create a route 
     for admin logout.
+    ```
     Route::get('/logout', [App\Http\Controllers\AdminController::class, 'logout'])->name('admin.logout');
+    ```
     
 21. In Middleware/AdminRedirectIfAuthenticated.php
-``
+```
 	public function handle(Request $request, Closure $next)
     	{
 		if (Auth::guard("admin")->check()) {
@@ -80,10 +82,10 @@
 
 		return $next($request);
     	}
-``
+```
 
 22. In Middleware/RedirectIfAuthenticated.php
-``
+```
 	public function handle(Request $request, Closure $next, ...$guards)
     	{
 
@@ -93,4 +95,4 @@
 
 		return $next($request);
    	}
-``
+```
